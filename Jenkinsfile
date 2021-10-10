@@ -14,7 +14,7 @@ pipeline {
         }
 		stage ('Docker Run') {
             steps {
-				sh 'docker -d run -p 8080:8080 -t springio/gs-spring-boot-docker'
+				sh 'docker run -d -p 8080:8080 -t springio/gs-spring-boot-docker'
             }
         }
     }
