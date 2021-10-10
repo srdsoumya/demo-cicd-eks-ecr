@@ -10,7 +10,7 @@ pipeline {
         stage ('Docker Build') {
             steps {
 				sh 'docker build -t demo-cicd-eks-ecr .' 
-				#sh 'docker run -d -p 8089:8089 -t springio/gs-spring-boot-docker'
+				//sh 'docker run -d -p 8089:8089 -t springio/gs-spring-boot-docker'
             }
         }
 		stage ('AWS Push') {
