@@ -10,36 +10,36 @@ pipeline {
     stages {
         stage ('Maven Build') {
             steps { 
-				sh 'mvn -Dmaven.test.skip=true -f pom.xml clean install' 
+				        sh 'mvn -Dmaven.test.skip=true -f pom.xml clean install' 
             }
         }
         stage ('Docker Build') {
             steps {
-				script {
-					dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-				}
-            }
-        }
-		stage ('AWS ECR') {
-			steps {
                 script {
-					sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-					sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-					sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-                } 
+                  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                }
             }
         }
-		stage ('AWS EKS') {
-			steps {
-                script {
-					sh "kubectl apply -f springboot-eks-lb.yaml"
-                } 
+        stage ('AWS ECR') {
+            steps {
+                  script {
+                        sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                        sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                  } 
             }
         }
-    }
-	post {
-        always {
-				cleanWs()
-			}
-		}
+        stage ('Deploy') {
+          steps {
+                  script {
+                      sh "kubectl apply -f springboot-eks-lb.yaml"
+                  } 
+                }
+            }
+        }
+    post {
+          always {
+          cleanWs()
+        }
+      }
 }
