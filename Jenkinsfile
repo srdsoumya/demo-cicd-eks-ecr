@@ -9,8 +9,10 @@ pipeline {
     }
     stages {
         stage ('Maven Build') {
-            steps { 
-				        sh 'mvn -Dmaven.test.skip=true -f pom.xml clean install' 
+            steps {
+				script {
+                  sh "mvn -Dmaven.test.skip=true -f pom.xml clean install"
+                }
             }
         }
         stage ('Docker Build') {
