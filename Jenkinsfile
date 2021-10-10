@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage ('Maven Build') {
             steps {
-				script {
+                script {
                   sh "mvn -Dmaven.test.skip=true -f pom.xml clean install"
                 }
             }
