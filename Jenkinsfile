@@ -19,11 +19,10 @@ pipeline {
 				sh 'docker push 796098993163.dkr.ecr.us-east-1.amazonaws.com/demo-cicd-eks-ecr:latest'
             }
         }
-		stage ('Clean') {
-            steps {
-				cleanWs()
-            }
-        }
-		
+		post {
+        always {
+            cleanWs()
+			}
+		}
     }
 }
