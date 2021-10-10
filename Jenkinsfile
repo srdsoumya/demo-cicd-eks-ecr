@@ -29,6 +29,13 @@ pipeline {
                 } 
             }
         }
+		stage ('AWS EKS') {
+			steps {
+                script {
+					sh "kubectl apply -f springboot-eks-lb.yaml"
+                } 
+            }
+        }
     }
 	post {
         always {

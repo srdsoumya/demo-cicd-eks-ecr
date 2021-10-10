@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-cicd-eks-ecr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-cicd-eks-ecr
+  template:
+    metadata:
+      labels:
+        app: demo-cicd-eks-ecr
+    spec:
+      containers:
+      - name: demo-cicd-eks-ecr-app
+        image: 796098993163.dkr.ecr.us-east-1.amazonaws.com/demo-cicd-eks-ecr:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8089
+# service type loadbalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-cicd-eks-ecr-svc
+spec:
+  selector:
+    app: demo-cicd-eks-ecr
+  ports:
+    - protocol: TCP
+      port: 8089
+      targetPort: 8089
+  type: LoadBalancer
