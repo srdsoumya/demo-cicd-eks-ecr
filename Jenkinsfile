@@ -9,12 +9,12 @@ pipeline {
         }
         stage ('Docker Build') {
             steps {
-				sh 'docker version' 
+				sh 'docker build -t springio/gs-spring-boot-docker .' 
             }
         }
-		stage ('CleanUp') {
+		stage ('Docker Run') {
             steps {
-				cleanWs() 
+				sh 'docker run -p 8089:8089 springio/gs-spring-boot-docker'
             }
         }
     }
