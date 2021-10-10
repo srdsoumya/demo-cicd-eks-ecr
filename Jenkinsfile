@@ -1,5 +1,12 @@
 pipeline {
     agent any
+	environment {
+        AWS_ACCOUNT_ID="796098993163"
+        AWS_DEFAULT_REGION="us-east-1"
+        IMAGE_REPO_NAME="demo-cicd-eks-ecr"
+        IMAGE_TAG="latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+    }
     stages {
         stage ('Maven Build') {
             steps { 
@@ -8,15 +15,18 @@ pipeline {
         }
         stage ('Docker Build') {
             steps {
-				sh 'docker build -t demo-cicd-eks-ecr .' 
-				//sh 'docker run -d -p 8089:8089 -t springio/gs-spring-boot-docker'
+				script {
+					dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+				}
             }
         }
-		stage ('AWS Push') {
-            steps {
-				sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 796098993163.dkr.ecr.us-east-1.amazonaws.com'
-				sh 'docker tag demo-cicd-eks-ecr:latest 796098993163.dkr.ecr.us-east-1.amazonaws.com/demo-cicd-eks-ecr:latest'
-				sh 'docker push 796098993163.dkr.ecr.us-east-1.amazonaws.com/demo-cicd-eks-ecr:latest'
+		stage ('AWS ECR') {
+			steps {
+                script {
+					sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+					sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+					sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                } 
             }
         }
     }
