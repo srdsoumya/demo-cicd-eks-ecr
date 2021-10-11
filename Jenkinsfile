@@ -3,7 +3,7 @@ pipeline {
 	environment {
         AWS_ACCOUNT_ID="796098993163"
         AWS_DEFAULT_REGION="us-east-1"
-        IMAGE_REPO_NAME="demo-cicd-eks-ecr"
+        IMAGE_REPO_NAME="info-cicd-eks-ecr"
         IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
@@ -34,7 +34,7 @@ pipeline {
         stage ('Deploy') {
           steps {
                   script {
-					  sh "sudo /home/ubuntu/kube/kubectl --kubeconfig=~/.kube/config apply -f springboot-eks-lb.yaml"
+					  sh "sudo kubectl --kubeconfig=/root/.kube/config apply -f springboot-eks-lb.yaml"
                   } 
                 }
             }
