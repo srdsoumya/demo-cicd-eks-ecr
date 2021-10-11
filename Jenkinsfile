@@ -20,11 +20,9 @@ node {
 			}
 		}
 		stage ('EKS Deploy') {
-			kubernetesDeploy(
-				configs: 'springboot-eks-lb.yaml',
-				kubeconfigId: 'K8S',
-				enableConfigSubstitution: true
-			)
+			withKubeConfig([credentialsId: 'K8S') {
+				sh "kubectl apply -f springboot-eks-lb.yaml"
+			}
 		}
 	}
 	post {
