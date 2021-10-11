@@ -34,9 +34,7 @@ pipeline {
         stage ('Deploy') {
           steps {
                   script {
-                      sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-                      sh "chmod u+x ./kubectl"
-                      sh "sudo ./kubectl --kubeconfig=/root/.kube/config apply -f springboot-eks-lb.yaml"
+                      sh "sudo kubectl apply -f springboot-eks-lb.yaml"
                   } 
                 }
             }
