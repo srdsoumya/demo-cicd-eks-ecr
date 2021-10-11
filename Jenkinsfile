@@ -23,7 +23,7 @@ node {
 			kubernetesDeploy(
 				configs: 'springboot-eks-lb.yaml',
 				kubeconfigId: 'K8S',
-				enableConfigSubstitution: false
+				enableConfigSubstitution: true
 			)
 		}
 		stage ('Clean Up') {
