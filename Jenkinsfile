@@ -21,7 +21,7 @@ node {
 		}
 		stage ('EKS Deploy') {
 			kubernetesDeploy(
-				configs: 'MyAwesomeApp/springBootDeploy.yml',
+				configs: 'springboot-eks-lb.yaml',
 				kubeconfigId: 'K8S',
 				enableConfigSubstitution: true
 			)
