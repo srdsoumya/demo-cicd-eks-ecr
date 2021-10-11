@@ -6,11 +6,12 @@ node {
         IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 	}
+	stage ('Checkout') {
+		checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/srdsoumya/demo-cicd-eks-ecr']]])"
+    }
 	stage ('Maven Build') {
-        
 		script {
 			sh "mvn -Dmaven.test.skip=true -f pom.xml clean install"
         }
-        
     }
 }
