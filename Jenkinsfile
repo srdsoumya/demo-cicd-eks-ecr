@@ -35,7 +35,7 @@ node {
 		}
 	}
 	post {
-        // Clean after build
+        // Clean after build ok
         always {
             cleanWs(cleanWhenNotBuilt: false,
                     deleteDirs: true,
