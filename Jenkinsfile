@@ -7,4 +7,11 @@ node {
         IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 	}
+	stage ('Maven Build') {
+        steps {
+			script {
+				sh "mvn -Dmaven.test.skip=true -f pom.xml clean install"
+            }
+        }
+    }
 }
