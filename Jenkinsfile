@@ -26,16 +26,10 @@ node {
 				enableConfigSubstitution: false
 			)
 		}
+		stage ('Clean Up') {
+			steps {
+				cleanWs()
+			}
+		}
 	}
-	post {
-        // Clean after build ok
-        always {
-            cleanWs(cleanWhenNotBuilt: false,
-                    deleteDirs: true,
-                    disableDeferredWipeout: true,
-                    notFailBuild: true,
-                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                               [pattern: '.propsfile', type: 'EXCLUDE']])
-        }
-    }
 }
