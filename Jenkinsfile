@@ -27,9 +27,7 @@ node {
 			)
 		}
 		stage ('Clean Up') {
-			steps {
-				cleanWs()
-			}
+			cleanWs()
 		}
 	}
 }
