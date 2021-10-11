@@ -6,4 +6,5 @@ node {
         IMAGE_REPO_NAME="info-cicd-eks-ecr"
         IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+	}
 }
