@@ -34,7 +34,7 @@ pipeline {
         stage ('Deploy') {
           steps {
                   script {
-					  sh "sudo kubectl --kubeconfig=/root/.kube/config apply -f springboot-eks-lb.yaml"
+					  sh "sudo /root/bin/kubectl --kubeconfig=/root/.kube/config apply -f springboot-eks-lb.yaml"
                   } 
                 }
             }
